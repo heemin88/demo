@@ -36,17 +36,6 @@ public class LevelProblemService {
 //    }
 
     /**
-     * 문제 추가
-     */
-    @Transactional
-    public Long add_problem(LevelProblem levelProblem,Problem problem){
-        problem.setLevelProblem(levelProblem);
-        List<Problem> problems = levelProblem.getProblem();
-        problems.add(problem);
-        levelProblemRepository.save(levelProblem);
-        return levelProblem.getId();
-    }
-    /**
      * level 문제 조회 서비스
      */
     public List<Problem> findLevelProblemByLevel(LevelProblemType level){

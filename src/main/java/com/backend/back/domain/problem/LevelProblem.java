@@ -23,4 +23,8 @@ public class LevelProblem {
 
     @OneToMany(mappedBy = "levelProblem")
     private List<Problem> problem = new ArrayList<>();
+    public LevelProblem(LevelProblemType level, List<Problem> problem){
+        this.level = level;
+        this.problem = problem;
+    }
 }
