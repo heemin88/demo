@@ -1,6 +1,6 @@
 package com.backend.back.domain.problem;
 
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -23,8 +23,8 @@ public class Problem {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="member_id")
+    private Member member;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,8 +37,8 @@ public class Problem {
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
     private LocalDate date; // 문제 받은 날짜
     @Builder
-    public Problem(User user, LevelProblem levelProblem, String url, int problem_order, String type, LocalDate date) {
-        this.user = user;
+    public Problem(Member member, LevelProblem levelProblem, String url, int problem_order, String type, LocalDate date) {
+        this.member = member;
         this.levelProblem = levelProblem;
         this.url = url;
         this.problem_order = problem_order;

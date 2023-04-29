@@ -2,7 +2,7 @@ package com.backend.back.api.controller;
 
 import com.backend.back.api.dto.problem.ProblemResponse;
 import com.backend.back.domain.problem.Problem;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.backend.back.model.response.CommonResult;
 import com.backend.back.model.response.ListResult;
 import com.backend.back.service.LevelProblemService;
@@ -26,15 +26,15 @@ public class ProblemController {
      * 회원 문제 등록
      */
     @PostMapping(value = "/problem")
-    public CommonResult NewProblem_save(User user){
-        List<Problem> problems = levelProblemService.findLevelProblemByLevel(user.getLevel()); //유저가 선정한 level의 문제가져오기
+    public CommonResult NewProblem_save(Member member){
+        List<Problem> problems = levelProblemService.findLevelProblemByLevel(member.getLevel()); //유저가 선정한 level의 문제가져오기
 
-        int current_problem = user.getProblem_current(); // 현재 받은 문제 번호
-        for(int i =1 ; i <= user.getProblem_count();i++){ //problem의 리스트에서 현재 받은 문제 번호 +1 해서 새로운 문제 등록
+        int current_problem = member.getProblem_current(); // 현재 받은 문제 번호
+        for(int i = 1; i <= member.getProblem_count(); i++){ //problem의 리스트에서 현재 받은 문제 번호 +1 해서 새로운 문제 등록
             Problem problem = problems.get(current_problem + i);
-            problemService.register_userProblem(problem,user);
+            problemService.register_userProblem(problem, member);
         }
-        user.setProblem_current(current_problem+user.getProblem_count()); // 받은 문제 수 만큼 더해주기
+        member.setProblem_current(current_problem+ member.getProblem_count()); // 받은 문제 수 만큼 더해주기
         return responseService.getSuccessResult(); // 성공결과정보 리턴
     }
     /**

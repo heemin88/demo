@@ -1,7 +1,7 @@
 package com.backend.back.domain.board;
 
 import com.backend.back.domain.comment.Comment;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class Board {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Member member;
 
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL)
     private List<Comment> commentList=new ArrayList<>();
@@ -42,8 +42,8 @@ public class Board {
     @Enumerated(EnumType.STRING)
     private BoardType status; // Question,
 
-    public Board(User user, String title, String description, LocalDate created_date, LocalDate modified_date, Integer view_count) {
-        this.user = user;
+    public Board(Member member, String title, String description, LocalDate created_date, LocalDate modified_date, Integer view_count) {
+        this.member = member;
         this.title = title;
         this.description = description;
         this.created_date = created_date;

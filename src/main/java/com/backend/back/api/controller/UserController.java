@@ -3,7 +3,7 @@ package com.backend.back.api.controller;
 import com.backend.back.Auth.GoogleOAuth;
 import com.backend.back.api.dto.user.UserResponse;
 import com.backend.back.domain.problem.LevelProblemType;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.backend.back.model.response.CommonResult;
 import com.backend.back.model.response.ListResult;
 import com.backend.back.model.response.SingleResult;
@@ -34,8 +34,8 @@ public class UserController {
     public ListResult<UserResponse> findAllUser(){
 
         System.out.println(11111111);
-        List<User> users = userService.findAll();
-        List<UserResponse> userResponseList = users.stream().map(UserResponse::toDto).collect(Collectors.toList());
+        List<Member> members = userService.findAll();
+        List<UserResponse> userResponseList = members.stream().map(UserResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(userResponseList);
     }
     /**
@@ -43,8 +43,8 @@ public class UserController {
      */
     @GetMapping(value="/user/{msrl}")
     public SingleResult<UserResponse> findUserById(@PathVariable long msrl){
-        User user = userService.findOne(msrl).orElse(null);
-        UserResponse userResponse = UserResponse.toDto(user);
+        Member member = userService.findOne(msrl).orElse(null);
+        UserResponse userResponse = UserResponse.toDto(member);
         return responseService.getSingleResult(userResponse);
     }
     /**
@@ -52,15 +52,15 @@ public class UserController {
     */
     @PostMapping(value="/user")
     public SingleResult<UserResponse> save(@RequestParam String mail, @RequestParam String password, @RequestParam LevelProblemType level){
-        User user = User.builder()
+        Member member = Member.builder()
                 .mail(mail)
                 .level(level)
                 .password(password)
                 .problem_count(0)
                 .problem_current(0)
                 .build();
-        userService.join(user);
-        UserResponse userResponse = UserResponse.toDto(user);
+        userService.join(member);
+        UserResponse userResponse = UserResponse.toDto(member);
         return responseService.getSingleResult(userResponse);
     }
     /**
@@ -86,7 +86,7 @@ public class UserController {
      */
 
     @GetMapping("/google/login")
-    public SingleResult<User> callback(
+    public SingleResult<Member> callback(
             @RequestParam(name="code") String code) throws IOException{
         return oAuthService.googlelogin(code);
     }

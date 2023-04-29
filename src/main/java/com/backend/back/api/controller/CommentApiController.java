@@ -6,7 +6,7 @@ import com.backend.back.api.dto.comment.CommentModifyRequest;
 import com.backend.back.api.dto.comment.CommentRequest;
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.comment.Comment;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.backend.back.model.response.CommonResult;
 import com.backend.back.service.BoardService;
 import com.backend.back.service.CommentService;
@@ -45,7 +45,7 @@ public class CommentApiController {
         }
 
 
-        User one = userService.findOne(request.getToken());
+        Member one = userService.findOne(request.getToken());
         Board board_byId = boardService.findBoard_byId(request.getBoardId());
         Comment comment=new Comment(request.getDescription(), LocalDate.now());
 
@@ -78,10 +78,10 @@ public class CommentApiController {
     public CommonResult deleteBoard(@RequestBody CommentDeleteRequest request) throws IOException {
 
         Comment comment = commentService.findOne(request.getCommentId());
-        User user = userService.findOne(request.getToken());
+        Member member = userService.findOne(request.getToken());
         Board board_byId = boardService.findBoard_byId(request.getBoardId());
 
-        commentService.delete_Comment(user,board_byId,comment);
+        commentService.delete_Comment(member,board_byId,comment);
 
         return responseService.getSuccessResult();
     }

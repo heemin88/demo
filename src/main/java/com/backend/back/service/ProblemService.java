@@ -1,9 +1,9 @@
 package com.backend.back.service;
 
 import com.backend.back.domain.problem.Problem;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.backend.back.repository.ProblemRepository;
-import com.backend.back.repository.UserRepository;
+import com.backend.back.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,15 +17,15 @@ import java.util.Optional;
 @Transactional
 public class ProblemService {
     final private ProblemRepository problemRepository;
-    final private UserRepository userRepository;
+    final private MemberRepository memberRepository;
 
     /**
      * 유저에 문제 등록 Service
      */
-    public  Long register_userProblem(Problem problem,User user) {
+    public  Long register_userProblem(Problem problem, Member member) {
         validateDuplicateProblem(problem);
-        problem.setUser(user);
-        List<Problem> problems = user.getProblems();
+        problem.setMember(member);
+        List<Problem> problems = member.getProblems();
         problems.add(problem);
         return problem.getId();
     }
@@ -61,7 +61,7 @@ public class ProblemService {
 
     public List<Problem> findProblemByUser(Long uid) {
 
-        User user = userRepository.findById(uid).orElse(null);
-        return problemRepository.findProblemByUser(user);
+        Member member = memberRepository.findById(uid).orElse(null);
+        return problemRepository.findProblemByMember(member);
     }
 }

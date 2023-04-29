@@ -10,7 +10,7 @@ public class CommentResponse {
     private String description;
 
     public CommentResponse(Comment comment) {
-        this.userId = comment.getUser().getMail();
+        this.userId = comment.getMember().getMail();
         this.description = comment.getDescription();
     }
 

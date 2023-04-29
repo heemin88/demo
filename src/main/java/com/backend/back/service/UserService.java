@@ -2,8 +2,8 @@ package com.backend.back.service;
 
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.comment.Comment;
-import com.backend.back.domain.user.User;
-import com.backend.back.repository.UserRepository;
+import com.backend.back.domain.member.Member;
+import com.backend.back.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,24 +16,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class UserService{
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * User 회원가입 Service
      */
     @Transactional //변경
-    public User join(User user) {
-        validateDuplicateMember(user); //중복회원검증
-        userRepository.save(user);
-        return user;
+    public Member join(Member member) {
+        validateDuplicateMember(member); //중복회원검증
+        memberRepository.save(member);
+        return member;
     }
 
     /**
      * 회원가입시 중복검사
      */
-    private void validateDuplicateMember(User user) {
+    private void validateDuplicateMember(Member member) {
         // Exception 발생
-        Optional<User> findMembers = userRepository.findByMail(user.getMail());
+        Optional<Member> findMembers = memberRepository.findByMail(member.getMail());
         if (!findMembers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
@@ -41,15 +41,15 @@ public class UserService{
     /**
      * 회원탈퇴 Service
      */
-    public void delete_User(User user) {
-        List<Comment> comments = user.getComments();
+    public void delete_User(Member member) {
+        List<Comment> comments = member.getComments();
         comments.clear();
 
-        List<Board> posts = user.getPosts();
+        List<Board> posts = member.getPosts();
         posts.clear();
 
 
-        userRepository.delete(user);
+        memberRepository.delete(member);
     }
 
     /**
@@ -57,16 +57,16 @@ public class UserService{
      */
 
 
-    public Optional<User> findOne(Long id) {
-        return userRepository.findById(id);
+    public Optional<Member> findOne(Long id) {
+        return memberRepository.findById(id);
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<Member> findAll() {
+        return memberRepository.findAll();
     }
 
-    public User findOne(String token) {
-        return userRepository.findByToken(token);
+    public Member findOne(String token) {
+        return memberRepository.findByToken(token);
     }
 }
 

@@ -4,7 +4,7 @@ import com.backend.back.api.dto.comment.CommentLikeRequest;
 import com.backend.back.api.dto.comment.CommentModifyRequest;
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.comment.Comment;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.backend.back.repository.CommentRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +25,15 @@ public class CommentService {
      *
      * 댓글 작성 Service
      */
-    public void write_Comment(User user, Board board, Comment comment) {
+    public void write_Comment(Member member, Board board, Comment comment) {
 
-        comment.setUser(user);
+        comment.setMember(member);
         comment.setBoard(board);
 
         List<Comment> commentList = board.getCommentList();
         commentList.add(comment);
 
-        List<Comment> comments = user.getComments();
+        List<Comment> comments = member.getComments();
         comments.add(comment);
 
         commentRepository.save(comment);
@@ -44,10 +44,10 @@ public class CommentService {
      *
      * 댓글 삭제 Service
      */
-    public void delete_Comment(User user,Board board,Comment comment) throws IOException {
+    public void delete_Comment(Member member, Board board, Comment comment) throws IOException {
 
-        if(user.getToken().equals(comment.getUser().getToken())) {
-            List<Comment> comments = user.getComments();
+        if(member.getToken().equals(comment.getMember().getToken())) {
+            List<Comment> comments = member.getComments();
             comments.remove(comment);
 
             List<Comment> commentList = board.getCommentList();
@@ -65,7 +65,7 @@ public class CommentService {
 
         Comment commentById = commentRepository.findCommentById(id);
 
-        if(commentById.getUser().getToken().equals(request.getToken())) {
+        if(commentById.getMember().getToken().equals(request.getToken())) {
             commentById.modify(request.getDescription());
         }
     }
@@ -85,8 +85,8 @@ public class CommentService {
         return commentRepository.findCommentsByBoard(board);
     }
 
-    public List<Comment> find_userComment(User user) {
-        return commentRepository.findCommentsByUser(user);
+    public List<Comment> find_userComment(Member member) {
+        return commentRepository.findCommentsByMember(member);
     }
 
     public Comment findOne(Long id) {

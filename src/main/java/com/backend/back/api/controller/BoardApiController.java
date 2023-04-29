@@ -5,7 +5,7 @@ import com.backend.back.api.dto.board.*;
 import com.backend.back.api.dto.comment.CommentResponse;
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.comment.Comment;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.backend.back.model.response.CommonResult;
 import com.backend.back.model.response.ListResult;
 import com.backend.back.model.response.SingleResult;
@@ -47,7 +47,7 @@ public class BoardApiController {
         }
 
         String token = request.getToken();
-        User one = userService.findOne(token);
+        Member one = userService.findOne(token);
 
         Board board = request.to_Entity();
         boardService.register_Board(one,board);

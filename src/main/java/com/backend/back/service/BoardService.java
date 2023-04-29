@@ -4,9 +4,9 @@ import com.backend.back.api.dto.board.BoardDeleteRequest;
 import com.backend.back.api.dto.board.BoardModifyRequest;
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.comment.Comment;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.backend.back.repository.BoardRepository;
-import com.backend.back.repository.UserRepository;
+import com.backend.back.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     /**
      *
@@ -29,9 +29,9 @@ public class BoardService {
      * 게시물 등록 Service
      */
     @Transactional
-    public  Long register_Board(User user,Board board) {
-        board.setUser(user);
-        List<Board> posts = user.getPosts();
+    public  Long register_Board(Member member, Board board) {
+        board.setMember(member);
+        List<Board> posts = member.getPosts();
         posts.add(board);
 
         boardRepository.save(board);
@@ -46,13 +46,13 @@ public class BoardService {
      */
     public void delete_Board(Board board, BoardDeleteRequest request) {
 
-        if (board.getUser().getToken().equals(request.getToken())) {
+        if (board.getMember().getToken().equals(request.getToken())) {
 
             List<Comment> commentList = board.getCommentList();
             commentList.clear();
 
-            User user = board.getUser();
-            List<Board> posts = user.getPosts();
+            Member member = board.getMember();
+            List<Board> posts = member.getPosts();
             posts.remove(board);
 
             boardRepository.delete(board);
@@ -68,7 +68,7 @@ public class BoardService {
 
         Board boardById = boardRepository.findBoardById(id);
 
-        if(request.getToken().equals(boardById.getUser().getToken())) {
+        if(request.getToken().equals(boardById.getMember().getToken())) {
             boardById.modify(request.getTitle(), request.getDescription());
         }
 
@@ -90,8 +90,8 @@ public class BoardService {
      * 공통 Service
      */
 
-    public List<Board> findBoard_byUser(User user) {
-        return boardRepository.findBoardsByUser(user);
+    public List<Board> findBoard_byUser(Member member) {
+        return boardRepository.findBoardsByMember(member);
     }
 
     public List<Board> findAll() {

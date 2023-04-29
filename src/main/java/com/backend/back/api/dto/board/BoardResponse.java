@@ -26,7 +26,7 @@ public class BoardResponse {
         this.title = board.getTitle();
         this.description = board.getDescription();
         this.view_count = board.getView_count();
-        this.userResponse=UserResponse.toDto(board.getUser());
+        this.userResponse=UserResponse.toDto(board.getMember());
         this.created_data=board.getCreated_date();
         this.modified_date=board.getModified_date();
         this.status=board.getStatus();

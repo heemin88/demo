@@ -1,4 +1,4 @@
-package com.backend.back.domain.user;
+package com.backend.back.domain.member;
 
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.comment.Comment;
@@ -15,11 +15,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor(access= AccessLevel.PROTECTED) //빈 생성자를 만드는 어노테이션
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name="member_id")
     private long id;
     private String mail;
     private String password;
@@ -31,16 +31,16 @@ public class User {
 
     private String token;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
     private List<Problem> problems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
     private List<Board> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
     @Builder
-    public User(String mail, String password, LevelProblemType level, int problem_count ,int problem_current) {
+    public Member(String mail, String password, LevelProblemType level, int problem_count , int problem_current) {
         this.mail = mail;
         this.password = password;
         this.level = level;

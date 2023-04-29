@@ -1,7 +1,7 @@
 package com.backend.back.domain.comment;
 
 import com.backend.back.domain.board.Board;
-import com.backend.back.domain.user.User;
+import com.backend.back.domain.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,8 +28,8 @@ public class Comment {
     
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
-    private User user;
+    @JoinColumn(name="member_id")
+    private Member member;
     private String description;
 
     private Integer like_Count;
