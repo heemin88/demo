@@ -72,17 +72,23 @@ public class UserController {
         return responseService.getSuccessResult(); //성공 결과 정보만 리턴
     }
 
+
     /**
-     * 구글 로그인 페이지로 보내기
+     * 구글 로그인 페이지로 보내기.
      */
 
     @GetMapping("/google")//맵핑된 주소로 넘어가면 바로 구글 로그인 창으로 넘어가게함.
     public void getGoogleAuthUrl(HttpServletResponse response) throws Exception{
-        response.sendRedirect(googleOAuth.getGoogleRedirectUrl());
+        try {
+            response.sendRedirect(googleOAuth.getOauthRedirectURL());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     /**
-     * 구글 로그인 후 리다이렉트 맵핑 주소로 받음.
+     * 구글 로그인 후 설정한 redirectURL.
+     * 이때 code가 발급됐을 것.
      */
 
     @GetMapping("/google/login")

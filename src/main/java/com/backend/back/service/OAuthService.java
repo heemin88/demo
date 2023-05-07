@@ -30,26 +30,32 @@ public class OAuthService {
         GoogleUserInfoDto googleUser = googleOAuth.getUserInfo(userInfoResponse);
         return googleUser;
     }
-    private void validateDuplicateMember(String mail) {
+    private Boolean validateDuplicateMember(String mail) {
         // Exception 발생
         Optional<Member> findMembers = memberRepository.findByMail(mail);
-        if (!findMembers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        if (!findMembers.isEmpty()) { //만약 존재하는 회원이면
+            return false;
         }
+        return true; //처음 가입하는 회원이면
     }
     public SingleResult<Member> googlelogin(String code) throws IOException{
         GoogleUserInfoDto googleUser = getGoogleUserInfoDto(code);
-        validateDuplicateMember(googleUser.getEmail()); //중복 확인
-        memberRepository.save(
-                Member.builder()
-                        .mail(googleUser.getEmail())
-                        .password("google")
-                        .problem_count(0)
-                        .problem_current(0)
-                        .build()
-        );
-        return responseService.getSingleResult(memberRepository.findByMail(
-                googleUser.getEmail()
-        ).orElse(null)); /*오류 처리로 고칠 필요 있음.*/
+        System.out.println("googleUser.getEmail() = " + googleUser.getEmail());
+        if (validateDuplicateMember(googleUser.getEmail())){//중복 확인 , 신규회원이면
+            memberRepository.save(
+                    Member.builder()
+                            .mail(googleUser.getEmail())
+                            .problem_count(0)
+                            .problem_current(0)
+                            .build()
+            );
+            return responseService.getSingleResult(memberRepository.findByMail(
+                    googleUser.getEmail()
+            ).orElse(null)); /*오류 처리로 고칠 필요 있음.*/
+        }
+        else{ // 이미 가입된 회원이면
+            return responseService.getSingleResult(memberRepository.findByMail(googleUser.getEmail()).orElseThrow(null));
+        }
+
     }
 }

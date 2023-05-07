@@ -50,5 +50,10 @@ class DemoApplicationTests {
         LevelProblem levelProblem_p = new LevelProblem(LevelProblemType.PLATINUM,problem_platinum);
         problemLevelRepository.save(levelProblem_p);
 
+        List<LevelProblem> all = problemLevelRepository.findAll();
+        for (LevelProblem p : all){
+            System.out.println("problem = " + p.getProblem());
+        }
+
     }
 }

@@ -14,14 +14,15 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 @Getter
 public class GoogleOAuth {
-    private final String googleLoginUrl="https://accounts.google.com";
+    private final String googleLoginUrl="https://accounts.google.com/o/oauth2/v2/auth";
     private final String GOOGLE_TOKEN_REQUEST_URL ="https://oauth2.googleapis.com/token";
-    private final String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/oauth2/vI/userinfo";
+    private final String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v2/userinfo";
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
 
@@ -48,7 +49,7 @@ public class GoogleOAuth {
         return null;
     }
     public GoogleOAuthTokenDto getAccessToken(ResponseEntity<String> response) throws JsonProcessingException{ // accessToken에 대한 정보를 자바 객체로 저장후 리턴
-        System.out.println("respone.getBody()= "+response.getBody());
+        System.out.println("getAccessToken respone.getBody()= "+response.getBody());
         GoogleOAuthTokenDto googleOAuthTokenDto = objectMapper.readValue(response.getBody(), GoogleOAuthTokenDto.class);
         return googleOAuthTokenDto;
     }
@@ -59,12 +60,27 @@ public class GoogleOAuth {
 
         HttpEntity<MultiValueMap<String,String>> request = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(GOOGLE_USERINFO_REQUEST_URL, HttpMethod.GET,request,String.class);
-        System.out.println("response.getBody() = "+response.getBody());
+        System.out.println("requestUserInfo response.getBody() = "+response.getBody());
         return response;
     }
     public GoogleUserInfoDto getUserInfo(ResponseEntity<String> response) throws JsonProcessingException{
         ObjectMapper objectMapper = new ObjectMapper();
         GoogleUserInfoDto googleUserInfoDto = objectMapper.readValue(response.getBody(),GoogleUserInfoDto.class);
         return googleUserInfoDto;
+    }
+
+    public String getOauthRedirectURL() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("scope", "email");
+        params.put("response_type", "code");
+        params.put("client_id", googleClientId);
+        params.put("redirect_uri", googleRedirectUrl);
+
+        String parameterString = params.entrySet().stream()
+                .map(x -> x.getKey() + "=" + x.getValue())
+                .collect(Collectors.joining("&"));
+
+        return googleLoginUrl + "?" + parameterString;
+
     }
 }
