@@ -37,7 +37,7 @@ public class CommentApiController {
      * 댓글 작성
      */
 
-    @PostMapping("/save")
+    @PostMapping
     public CommonResult registerComment(@Validated @RequestBody CommentRequest request,
                                         BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
@@ -58,7 +58,7 @@ public class CommentApiController {
      *
      * 댓글 수정
      */
-    @PutMapping("/modify")
+    @PutMapping
     public CommonResult modifyComment(@Validated @RequestBody CommentModifyRequest request,
                                                      BindingResult bindingResult) throws IOException {
         if(bindingResult.hasErrors()) {
@@ -74,7 +74,7 @@ public class CommentApiController {
      *
      * 댓글 삭제
      */
-    @PostMapping("/delete")
+    @DeleteMapping
     public CommonResult deleteBoard(@RequestBody CommentDeleteRequest request) throws IOException {
 
         Comment comment = commentService.findOne(request.getCommentId());

@@ -38,7 +38,7 @@ public class BoardApiController {
      * 게시물 등록
      */
     
-    @PostMapping("/register")
+    @PostMapping
     public CommonResult registerBoard(@Validated @RequestBody BoardRequest request,
                                                     BindingResult bindingResult) {
 //
@@ -86,7 +86,7 @@ public class BoardApiController {
      *
      * 게시물 수정
      */
-    @PutMapping("/modify/{id}")
+    @PutMapping("/{id}")
     public CommonResult modifyBoard(@PathVariable("id") Long id,
                                                    @Validated @RequestBody BoardModifyRequest request,
                                                    BindingResult bindingResult) throws IOException {
@@ -103,7 +103,7 @@ public class BoardApiController {
      *
      * 게시물 삭제
      */
-    @PostMapping("/delete/{id}")
+    @PostMapping("/{id}")
     public CommonResult deleteBoard(@PathVariable("id") Long id,
                                                    @RequestBody BoardDeleteRequest request) {
         Board board_byId = boardService.findBoard_byId(id);
