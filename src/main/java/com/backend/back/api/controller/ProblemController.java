@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController // 결과값을 JSON으로 출력함
-@RequestMapping("/api/problem")
+@RequestMapping("/api")
 public class ProblemController {
     private final ProblemService problemService;
     private final LevelProblemService levelProblemService;
@@ -25,7 +25,7 @@ public class ProblemController {
     /**
      * 회원 문제 등록
      */
-    @PostMapping
+    @PostMapping(value = "/problem")
     public CommonResult NewProblem_save(Member member){
         List<Problem> problems = levelProblemService.findLevelProblemByLevel(member.getLevel()); //유저가 선정한 level의 문제가져오기
 
