@@ -91,8 +91,8 @@ public class UserController {
      * 이때 code가 발급됐을 것.
      */
 
-    @GetMapping("/google/login")
-    public SingleResult<Member> callback(
+    @PostMapping("/auth/login")
+    public SingleResult<Member> googleLogin(
             @RequestParam(name="code") String code) throws IOException{
         return oAuthService.googlelogin(code);
     }
