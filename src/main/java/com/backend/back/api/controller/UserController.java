@@ -33,7 +33,6 @@ public class UserController {
     @GetMapping(value="/users")
     public ListResult<UserResponse> findAllUser(){
 
-        System.out.println(11111111);
         List<Member> members = userService.findAll();
         List<UserResponse> userResponseList = members.stream().map(UserResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(userResponseList);

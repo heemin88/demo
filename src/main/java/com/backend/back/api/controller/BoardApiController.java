@@ -56,30 +56,32 @@ public class BoardApiController {
         return responseService.getSuccessResult();
     }
 
+
     /**
      *
-     * 게시물 전체 조회
+     *
+     * 게시물 카테고리별,전체 조회 !!
      */
-    @GetMapping("/boards")
-    public ListResult<BoardResponse> getBoardList() {
-        List<Board> all = boardService.findAll();
-        List<BoardResponse> boardResponseList = all.stream().map(BoardResponse::toDto).collect(Collectors.toList());
-        return responseService.getListResult(boardResponseList);
-    }
 
-    @GetMapping("/boards/Question")
-    public ListResult<BoardResponse> getQuestionList() {
-        List<Board> question = boardService.findQuestion(BoardType.QUESTION);
+    @GetMapping("/boards")
+    public ListResult<BoardResponse> getQuestionList(@RequestParam(name="category") String status) {
+
+        System.out.println(status);
+        List<Board> question = null;
+
+        if(status.equals("question")) {
+            question=boardService.findQuestion(BoardType.QUESTION);
+        }
+        else if(status.equals("discuss")) {
+            question = boardService.findQuestion(BoardType.DISCUSS);
+        }
+        else if(status.equals("all")) {
+            question = boardService.findAll();
+        }
         List<BoardResponse> boardResponseList=question.stream().map(BoardResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(boardResponseList);
     }
 
-    @GetMapping("/boards/Discuss")
-    public ListResult<BoardResponse> getDiscussList() {
-        List<Board> discuss = boardService.findQuestion(BoardType.DISCUSS);
-        List<BoardResponse> boardResponseList=discuss.stream().map(BoardResponse::toDto).collect(Collectors.toList());
-        return responseService.getListResult(boardResponseList);
-    }
 
     /**
      *
