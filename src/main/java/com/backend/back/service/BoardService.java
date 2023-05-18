@@ -3,6 +3,7 @@ package com.backend.back.service;
 import com.backend.back.api.dto.board.BoardDeleteRequest;
 import com.backend.back.api.dto.board.BoardModifyRequest;
 import com.backend.back.domain.board.Board;
+import com.backend.back.domain.board.BoardType;
 import com.backend.back.domain.comment.Comment;
 import com.backend.back.domain.member.Member;
 import com.backend.back.repository.BoardRepository;
@@ -100,6 +101,10 @@ public class BoardService {
 
     public Board findBoard_byId(Long id) {
         return boardRepository.findBoardById(id);
+    }
+
+    public List<Board> findQuestion(BoardType status) {
+        return boardRepository.findBoardsByStatus(status);
     }
 
 

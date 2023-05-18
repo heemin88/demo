@@ -4,6 +4,7 @@ package com.backend.back.api.controller;
 import com.backend.back.api.dto.board.*;
 import com.backend.back.api.dto.comment.CommentResponse;
 import com.backend.back.domain.board.Board;
+import com.backend.back.domain.board.BoardType;
 import com.backend.back.domain.comment.Comment;
 import com.backend.back.domain.member.Member;
 import com.backend.back.model.response.CommonResult;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/api/board")
+@RequestMapping("/api")
 public class BoardApiController {
 
     private final UserService userService;
@@ -38,7 +39,7 @@ public class BoardApiController {
      * 게시물 등록
      */
     
-    @PostMapping
+    @PostMapping("/board")
     public CommonResult registerBoard(@Validated @RequestBody BoardRequest request,
                                                     BindingResult bindingResult) {
 //
@@ -59,10 +60,24 @@ public class BoardApiController {
      *
      * 게시물 전체 조회
      */
-    @GetMapping
+    @GetMapping("/boards")
     public ListResult<BoardResponse> getBoardList() {
         List<Board> all = boardService.findAll();
         List<BoardResponse> boardResponseList = all.stream().map(BoardResponse::toDto).collect(Collectors.toList());
+        return responseService.getListResult(boardResponseList);
+    }
+
+    @GetMapping("/boards/Question")
+    public ListResult<BoardResponse> getQuestionList() {
+        List<Board> question = boardService.findQuestion(BoardType.QUESTION);
+        List<BoardResponse> boardResponseList=question.stream().map(BoardResponse::toDto).collect(Collectors.toList());
+        return responseService.getListResult(boardResponseList);
+    }
+
+    @GetMapping("/boards/Discuss")
+    public ListResult<BoardResponse> getDiscussList() {
+        List<Board> discuss = boardService.findQuestion(BoardType.DISCUSS);
+        List<BoardResponse> boardResponseList=discuss.stream().map(BoardResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(boardResponseList);
     }
 
@@ -71,7 +86,7 @@ public class BoardApiController {
      * 게시물 단건 조회
      */
 
-    @GetMapping("/{id}")
+    @GetMapping("/board/{id}")
     public SingleResult<BoardCommentResponse>getBoard(@PathVariable("id") Long id) {
         Board board_byId = boardService.findBoard_byId(id);
 
@@ -86,7 +101,7 @@ public class BoardApiController {
      *
      * 게시물 수정
      */
-    @PutMapping("/{id}")
+    @PutMapping("/board/{id}")
     public CommonResult modifyBoard(@PathVariable("id") Long id,
                                                    @Validated @RequestBody BoardModifyRequest request,
                                                    BindingResult bindingResult) throws IOException {
@@ -103,7 +118,7 @@ public class BoardApiController {
      *
      * 게시물 삭제
      */
-    @PostMapping("/{id}")
+    @DeleteMapping("board/{id}")
     public CommonResult deleteBoard(@PathVariable("id") Long id,
                                                    @RequestBody BoardDeleteRequest request) {
         Board board_byId = boardService.findBoard_byId(id);
