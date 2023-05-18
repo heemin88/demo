@@ -81,6 +81,5 @@ public class GoogleOAuth {
                 .collect(Collectors.joining("&"));
 
         return googleLoginUrl + "?" + parameterString;
-
     }
 }
