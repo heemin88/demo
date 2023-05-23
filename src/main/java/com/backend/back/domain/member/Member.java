@@ -38,6 +38,7 @@ public class Member {
     private List<Board> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
+
     private List<Comment> comments = new ArrayList<>();
     @Builder
     public Member(String mail, String password, LevelProblemType level, int problem_count , int problem_current) {
