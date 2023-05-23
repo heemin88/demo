@@ -75,6 +75,9 @@ public class BoardApiController {
         else if(status.equals("discuss")) {
             question = boardService.findQuestion(BoardType.DISCUSS);
         }
+        else if(status.equals("popularity")) {
+
+        }
         else if(status.equals("all")) {
             question = boardService.findAll();
         }

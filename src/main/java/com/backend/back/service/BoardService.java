@@ -87,6 +87,12 @@ public class BoardService {
 
     /**
      *
+     * 게시물 조회수 많은순 으로 조회
+     */
+
+
+    /**
+     *
      *
      * 공통 Service
      */
