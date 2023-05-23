@@ -10,6 +10,8 @@ import com.backend.back.repository.BoardRepository;
 import com.backend.back.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -97,20 +99,20 @@ public class BoardService {
      * 공통 Service
      */
 
-    public List<Board> findBoard_byUser(Member member) {
-        return boardRepository.findBoardsByMember(member);
+    public Page<Board> findBoard_byUser(Member member,Pageable pageable) {
+        return boardRepository.findBoardsByMember(member,pageable);
     }
 
-    public List<Board> findAll() {
-        return boardRepository.findAll();
+    public Page<Board> findAll(Pageable pageable) {
+        return boardRepository.findAll(pageable);
     }
 
     public Board findBoard_byId(Long id) {
         return boardRepository.findBoardById(id);
     }
 
-    public List<Board> findQuestion(BoardType status) {
-        return boardRepository.findBoardsByStatus(status);
+    public Page<Board> findQuestion(BoardType status,Pageable pageable) {
+        return boardRepository.findBoardsByStatus(status,pageable);
     }
 
 

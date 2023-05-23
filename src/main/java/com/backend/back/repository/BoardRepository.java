@@ -3,6 +3,8 @@ package com.backend.back.repository;
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.board.BoardType;
 import com.backend.back.domain.member.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +13,7 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends JpaRepository<Board,Long> {
     Board findBoardById(Long id);
-    List<Board> findBoardsByMember(Member member);
+    Page<Board> findBoardsByMember(Member member, Pageable pageable);
 
-    List<Board> findBoardsByStatus(BoardType status);
+    Page<Board> findBoardsByStatus(BoardType status,Pageable pageable);
 }

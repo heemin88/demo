@@ -15,6 +15,10 @@ import com.backend.back.service.CommentService;
 import com.backend.back.service.ResponseService;
 import com.backend.back.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,22 +68,22 @@ public class BoardApiController {
      */
 
     @GetMapping("/boards")
-    public ListResult<BoardResponse> getQuestionList(@RequestParam(name="category") String status) {
+    public ListResult<BoardResponse> getQuestionList(@RequestParam(name="category") String status,
+                                                     @PageableDefault(page=0,size = 5,direction = Sort.Direction.DESC) Pageable pageable) {
 
-        System.out.println(status);
-        List<Board> question = null;
+        Page<Board> question = null;
 
         if(status.equals("question")) {
-            question=boardService.findQuestion(BoardType.QUESTION);
+            question=boardService.findQuestion(BoardType.QUESTION,pageable);
         }
         else if(status.equals("discuss")) {
-            question = boardService.findQuestion(BoardType.DISCUSS);
+            question = boardService.findQuestion(BoardType.DISCUSS,pageable);
         }
         else if(status.equals("popularity")) {
 
         }
         else if(status.equals("all")) {
-            question = boardService.findAll();
+            question = boardService.findAll(pageable);
         }
         List<BoardResponse> boardResponseList=question.stream().map(BoardResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(boardResponseList);
