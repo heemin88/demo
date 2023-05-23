@@ -4,10 +4,12 @@ package com.backend.back.api.controller;
 import com.backend.back.api.dto.comment.CommentDeleteRequest;
 import com.backend.back.api.dto.comment.CommentModifyRequest;
 import com.backend.back.api.dto.comment.CommentRequest;
+import com.backend.back.api.dto.user.UserResponse;
 import com.backend.back.domain.board.Board;
 import com.backend.back.domain.comment.Comment;
 import com.backend.back.domain.member.Member;
 import com.backend.back.model.response.CommonResult;
+import com.backend.back.model.response.ListResult;
 import com.backend.back.service.BoardService;
 import com.backend.back.service.CommentService;
 import com.backend.back.service.ResponseService;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,6 +56,15 @@ public class CommentApiController {
         commentService.write_Comment(one,board_byId,comment);
 
         return responseService.getSuccessResult();
+    }
+    /**
+     * 댓글 가져오기
+     */
+    @GetMapping
+    public ListResult<UserResponse> findAllComment(){
+        List<Member> members = userService.findAll();
+        List<UserResponse> userResponseList = members.stream().map(UserResponse::toDto).collect(Collectors.toList());
+        return responseService.getListResult(userResponseList);
     }
 
     /**

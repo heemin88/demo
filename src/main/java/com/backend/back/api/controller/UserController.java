@@ -32,7 +32,6 @@ public class UserController {
      */
     @GetMapping(value="/users")
     public ListResult<UserResponse> findAllUser(){
-
         List<Member> members = userService.findAll();
         List<UserResponse> userResponseList = members.stream().map(UserResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(userResponseList);
@@ -40,9 +39,9 @@ public class UserController {
     /**
      * 회원 단건 조회
      */
-    @GetMapping(value="/user/{msrl}")
-    public SingleResult<UserResponse> findUserById(@PathVariable long msrl){
-        Member member = userService.findOne(msrl).orElse(null);
+    @GetMapping(value="/user/{token}")
+    public SingleResult<UserResponse> findUserByToken(@PathVariable String token){
+        Member member = userService.findOne(token);
         UserResponse userResponse = UserResponse.toDto(member);
         return responseService.getSingleResult(userResponse);
     }
