@@ -69,7 +69,7 @@ public class BoardApiController {
 
     @GetMapping("/boards")
     public ListResult<BoardResponse> getQuestionList(@RequestParam(name="category") String status,
-                                                     @PageableDefault(page=0,size = 5,direction = Sort.Direction.DESC) Pageable pageable) {
+                                                     @PageableDefault(size = 5,direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Board> question = null;
 
