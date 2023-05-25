@@ -72,11 +72,11 @@ public class BoardApiController {
     public ListResult<BoardResponse> getQuestionList(@RequestParam(required = false,defaultValue = "all",value="category") String status,
                                                      @RequestParam(required = false,defaultValue = "0",value = "page") int PageNum,
                                                      @RequestParam(required = false,defaultValue = "id",value="orderby") String orderCriteria,
-                                                     @RequestParam String keyword,
+                                                     @RequestParam(required = false) String keyword,
                                                      @PageableDefault(size = 5,direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Board> question=null;
-        if(keyword.equals(null)) {
+        Page<Board> question;
+        if(keyword==null) {
             question = boardService.findBoardAll(pageable,status,PageNum,orderCriteria);
         }
         else {
