@@ -24,6 +24,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Key;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,11 +72,16 @@ public class BoardApiController {
     public ListResult<BoardResponse> getQuestionList(@RequestParam(required = false,defaultValue = "all",value="category") String status,
                                                      @RequestParam(required = false,defaultValue = "0",value = "page") int PageNum,
                                                      @RequestParam(required = false,defaultValue = "id",value="orderby") String orderCriteria,
+                                                     @RequestParam String keyword,
                                                      @PageableDefault(size = 5,direction = Sort.Direction.DESC) Pageable pageable) {
 
-
-        Page<Board> question = boardService.findBoardAll(pageable,status,PageNum,orderCriteria);
-
+        Page<Board> question=null;
+        if(keyword.equals(null)) {
+            question = boardService.findBoardAll(pageable,status,PageNum,orderCriteria);
+        }
+        else {
+            question = boardService.findTitle(keyword,pageable);
+        }
         List<BoardResponse> boardResponseList=question.stream().map(BoardResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(boardResponseList);
     }

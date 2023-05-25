@@ -126,5 +126,9 @@ public class BoardService {
         }
     }
 
+    public Page<Board> findTitle(String keyword,Pageable pageable) {
+        return boardRepository.findByTitleContaining(keyword,pageable);
+    }
+
 
 }
