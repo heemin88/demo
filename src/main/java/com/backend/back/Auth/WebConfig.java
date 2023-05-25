@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer { // cors설정
     @Override
     public void addCorsMappings(final CorsRegistry registry){//CORS 정책을 허용해줄 url을 지정함.
         registry.addMapping("/api/**")
-                .allowedOrigins("https://gdsc-knu.github.io/1st-Project-4th")
+                .allowedOrigins("*")
                 .allowedMethods(ALLOWED_METHOD_NAMES.split(","))//허용하는 메서드
                 .exposedHeaders(HttpHeaders.LOCATION); //서버에 반환해 줄 헤더를 지정
     }
