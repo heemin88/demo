@@ -56,4 +56,8 @@ public class Board {
         this.description=description;
         this.modified_date=LocalDate.now();
     }
+
+    public Integer get_commentCnt() {
+        return this.commentList.size();
+    }
 }

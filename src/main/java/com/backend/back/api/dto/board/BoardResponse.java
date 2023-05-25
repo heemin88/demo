@@ -18,18 +18,21 @@ public class BoardResponse {
 
     private UserResponse userResponse;
 
-    private LocalDate created_data;
+    private LocalDate created_date;
     private LocalDate modified_date;
     private BoardType status;
+
+    private Integer comment_count;
 
     public BoardResponse(Board board) {
         this.title = board.getTitle();
         this.description = board.getDescription();
         this.view_count = board.getView_count();
         this.userResponse=UserResponse.toDto(board.getMember());
-        this.created_data=board.getCreated_date();
+        this.created_date=board.getCreated_date();
         this.modified_date=board.getModified_date();
         this.status=board.getStatus();
+        this.comment_count=board.get_commentCnt();
     }
 
 

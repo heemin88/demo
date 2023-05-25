@@ -7,12 +7,14 @@ import lombok.Data;
 @Data
 public class UserResponse {
 
+    private Long id;
     private String mail;
     private LevelProblemType level;
     private int problem_count;
     private int problem_current;
 
     public UserResponse(Member member) {
+        this.id=member.getId();
         this.mail= member.getMail();
         this.level= member.getLevel();
         this.problem_count= member.getProblem_count();
