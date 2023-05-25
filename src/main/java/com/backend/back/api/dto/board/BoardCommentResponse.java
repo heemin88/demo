@@ -23,7 +23,7 @@ public class BoardCommentResponse {
     public BoardCommentResponse(Board board,List<CommentResponse> commentList) {
         this.title = board.getTitle();
         this.description = board.getDescription();
-        this.view_count = board.getView_count();
+        this.view_count = board.getViewCount();
         this.userResponse = UserResponse.toDto(board.getMember());
         this.commentList=commentList;
     }

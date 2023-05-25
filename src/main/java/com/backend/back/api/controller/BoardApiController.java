@@ -68,23 +68,14 @@ public class BoardApiController {
      */
 
     @GetMapping("/boards")
-    public ListResult<BoardResponse> getQuestionList(@RequestParam(name="category") String status,
+    public ListResult<BoardResponse> getQuestionList(@RequestParam(required = false,defaultValue = "all",value="category") String status,
+                                                     @RequestParam(required = false,defaultValue = "0",value = "page") int PageNum,
+                                                     @RequestParam(required = false,defaultValue = "id",value="orderby") String orderCriteria,
                                                      @PageableDefault(size = 5,direction = Sort.Direction.DESC) Pageable pageable) {
 
-        Page<Board> question = null;
 
-        if(status.equals("question")) {
-            question=boardService.findQuestion(BoardType.QUESTION,pageable);
-        }
-        else if(status.equals("discuss")) {
-            question = boardService.findQuestion(BoardType.DISCUSS,pageable);
-        }
-        else if(status.equals("popularity")) {
+        Page<Board> question = boardService.findBoardAll(pageable,status,PageNum,orderCriteria);
 
-        }
-        else if(status.equals("all")) {
-            question = boardService.findAll(pageable);
-        }
         List<BoardResponse> boardResponseList=question.stream().map(BoardResponse::toDto).collect(Collectors.toList());
         return responseService.getListResult(boardResponseList);
     }

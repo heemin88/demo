@@ -11,7 +11,9 @@ import com.backend.back.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -83,8 +85,8 @@ public class BoardService {
      */
 
     public void updateViewCnt(Board board) {
-        Integer view_count = board.getView_count();
-        board.setView_count(view_count+1);
+        Integer view_count = board.getViewCount();
+        board.setViewCount(view_count+1);
     }
 
     /**
@@ -99,20 +101,29 @@ public class BoardService {
      * 공통 Service
      */
 
-    public Page<Board> findBoard_byUser(Member member,Pageable pageable) {
-        return boardRepository.findBoardsByMember(member,pageable);
-    }
-
-    public Page<Board> findAll(Pageable pageable) {
-        return boardRepository.findAll(pageable);
-    }
-
     public Board findBoard_byId(Long id) {
         return boardRepository.findBoardById(id);
     }
 
     public Page<Board> findQuestion(BoardType status,Pageable pageable) {
         return boardRepository.findBoardsByStatus(status,pageable);
+    }
+
+    public Page<Board> findBoardAll(Pageable pageable,String category,int pageNum,String orderCriteria) {
+        pageable = PageRequest.of(pageNum, 5, Sort.by(Sort.Direction.DESC, orderCriteria));
+
+        if(category.equals("question")) {
+            return boardRepository.findBoardsByStatus(BoardType.QUESTION, pageable);
+        }
+        else if(category.equals("discuss")) {
+            return boardRepository.findBoardsByStatus(BoardType.DISCUSS, pageable);
+        }
+        else if(category.equals("popularity")) {
+            return boardRepository.findAll(pageable);
+        }
+        else {
+            return boardRepository.findAll(pageable);
+        }
     }
 
 

@@ -36,7 +36,7 @@ public class Board {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
     private LocalDate modified_date;
-    private Integer view_count;
+    private Integer viewCount;
 
 
     @Enumerated(EnumType.STRING)
@@ -48,7 +48,7 @@ public class Board {
         this.description = description;
         this.created_date = created_date;
         this.modified_date = modified_date;
-        this.view_count = view_count;
+        this.viewCount = view_count;
     }
 
     public void modify(String title,String description) {

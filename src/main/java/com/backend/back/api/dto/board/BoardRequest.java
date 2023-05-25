@@ -27,7 +27,7 @@ public class BoardRequest {
         BoardType boardType = BoardType.from(status);
         board.setStatus(boardType);
         board.setCreated_date(LocalDate.now());
-        board.setView_count(0);
+        board.setViewCount(0);
         return board;
     }
 }
